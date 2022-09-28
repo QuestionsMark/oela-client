@@ -1,0 +1,121 @@
+*::-webkit-scrollbar {
+    width: 4px;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: $dark-green;
+}
+
+*::-webkit-scrollbar-track {
+    background-color: $light-green;
+}
+
+body {
+    // font-family: 'Livvic', sans-serif !important;
+    font-family: $content;
+    overflow-x: hidden;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.img {
+    display: block;
+    object-fit: cover;
+    width: 100%;
+
+    &--galery {
+        aspect-ratio: 1/1;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+
+        &:nth-child(2) {
+            margin-top: -100%;
+        }
+
+        &.active {
+            opacity: 1;
+        }
+    }
+}
+
+.background-img {
+    position: fixed;
+    right: 100px;
+    bottom: 100px;
+    transform: translate(50%, 50%);
+    width: 70vw;
+    opacity: 0.6;
+    z-index: -1;
+}
+
+.title {
+    font-weight: 200;
+    font-size: 26px;
+
+    &__wrapper {
+        margin: 0 auto 50px;
+    }
+
+    &--md {
+        font-family: $title;
+        font-size: 32px;
+        text-transform: uppercase;
+    }
+    
+    &--sm {
+        font-weight: 200;
+        color: $light-green;
+    }
+}
+
+.text {
+    // padding: 10px;
+    margin: 0 auto;
+    text-align: center;
+    font-family: $content;
+    font-weight: 200;
+}
+
+.link {
+    font-family: $link;
+    color: $green;
+    text-transform: uppercase;
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.section {
+    margin-bottom: 100px;
+    opacity: 0;
+    animation: slide cubic-bezier(0.280, 0.355, 0.290, 1.270) 0.5s forwards;
+    &:nth-of-type(2n - 1) {
+        transform: translateX(-100px);
+    }
+    &:nth-of-type(2n) {
+        transform: translateX(100px);
+    }
+}
+
+.specifications {
+    &__list {
+        list-style: disc;
+        padding-left: 20px;
+    }
+
+    &__item {
+        font-family: $content;
+        font-weight: 200;
+    }
+}
+
+.show {
+    opacity: 0;
+    animation: show ease-in-out 0.5s forwards;
+}

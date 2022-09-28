@@ -1,0 +1,34 @@
+.filter {
+    padding: 30px 30px 10px;
+    border-bottom: 1px solid $light-green;
+
+    &__list {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    &__item {
+        transform: translateX(100px);
+        padding: 8px 30px;
+        margin: 0 20px 20px 0;
+        color: $green;
+        background-color: #f5f8dc;
+        font-family: $content;
+        font-weight: 200;
+        text-transform: uppercase;
+        opacity: 0;
+        cursor: pointer;
+        transition: $transition-time;
+        animation: slide cubic-bezier(0.280, 0.355, 0.290, 1.270) 0.4s forwards;
+        @for $i from 1 through 100 {
+            &:nth-child(#{$i}n) {
+                animation-delay: #{$i * 0.1 - 0.1}s;
+            }
+        }
+
+        &.checked {
+            background-color: $light-green;
+            // color: #eee;
+        }
+    }
+}
