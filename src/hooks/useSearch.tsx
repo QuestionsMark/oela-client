@@ -1,27 +1,40 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import axios, { Canceler, AxiosError } from 'axios';
 import { HOST_ADDRESS } from '../config';
-import { defaultPage, Page } from '../components/common/Pagination';
+
+export interface Queries {
+    hashtags?: string[];
+    productType?: string;
+}
 
 export interface SearchResult<T> {
     data: T[];
     loading: boolean;
     hasMore: boolean;
     amount: number;
-    page: Page;
+    page: number;
     searchPhrase: string;
     handleSearchPhraseChange: (text: string) => void;
-    setPage: Dispatch<SetStateAction<Page>>;
+    setPage: Dispatch<SetStateAction<number>>;
     refresh: () => void;
 }
 
-export function useSearch<T>(collection: string, limit: number): SearchResult<T> {
+export function useSearch<T>(collection: string, limit: number, queries: Queries = {}, dependencies: any[] = []): SearchResult<T> {
 
     const debounceTimeoutId = useRef<NodeJS.Timeout | null>(null);
     const delayTimeoutId = useRef<NodeJS.Timeout | null>(null);
 
+    const stringify = (): Queries => {
+        const { hashtags, productType } = queries;
+        return {
+            hashtags: !hashtags || hashtags.length === 0 ? undefined : hashtags,
+            productType: productType || undefined,
+        };
+    };
+
     const [reload, setReload] = useState(false);
-    const [page, setPage] = useState<Page>(defaultPage);
+    const [page, setPage] = useState<number>(1);
+    const [stringifyQueries, setStringifyQueries] = useState<Queries>(stringify());
     const [searchPhrase, setSearchPhrase] = useState('');
     const [search, setSearch] = useState('');
     const handleSearchPhraseChange = (text: string) => {
@@ -30,22 +43,26 @@ export function useSearch<T>(collection: string, limit: number): SearchResult<T>
 
     const refresh = () => {
         setReload(state => !state);
-        setPage(defaultPage);
+        setPage(1);
     };
 
     useEffect(() => {
         setData([]);
-    }, [reload, search]);
+    }, [reload, search, stringifyQueries, page]);
 
     useEffect(() => {
         if (debounceTimeoutId.current) {
             clearTimeout(debounceTimeoutId.current);
         }
         debounceTimeoutId.current = setTimeout(() => {
-            setPage(defaultPage);
+            setPage(1);
             setSearch(searchPhrase);
+            if (JSON.stringify(stringifyQueries) !== JSON.stringify(stringify())) {
+                setData([]);
+                setStringifyQueries(stringify());
+            }
         }, 500);
-    }, [searchPhrase]);
+    }, [searchPhrase, ...dependencies]);
 
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState<T[]>([]);
@@ -67,8 +84,9 @@ export function useSearch<T>(collection: string, limit: number): SearchResult<T>
             url: `${HOST_ADDRESS}/${collection}`,
             params: {
                 search: search,
-                page: page.current,
-                limit
+                page: page,
+                limit,
+                ...stringifyQueries,
             },
             cancelToken: new axios.CancelToken(c => cancel = c),
         })
@@ -95,7 +113,7 @@ export function useSearch<T>(collection: string, limit: number): SearchResult<T>
             cancel();
         }
 
-    }, [search, page, collection, reload]);
+    }, [search, page, collection, reload, stringifyQueries]);
 
     return { loading, data, hasMore, amount, page, searchPhrase, setPage, handleSearchPhraseChange, refresh };
 }

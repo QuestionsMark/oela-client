@@ -14,7 +14,7 @@ export const HashtagFilter = ({ choosedHashtags, hashtags, handleChange }: Props
     };
 
     const hashtagList = () => {
-        return hashtags.map(h => <FilterItem key={h.id} checked={checkIsChecked(h.name)} hashtag value={h.name} handleChange={handleChange} />);
+        return hashtags.map(h => <FilterItem key={h.id} checked={checkIsChecked(h.id)} hashtag name={h.name} value={h.id} handleChange={handleChange} />);
     };
 
     return (

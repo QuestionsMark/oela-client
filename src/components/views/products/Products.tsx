@@ -11,6 +11,7 @@ import { ProductTypesFilter } from "../../common/ProductTypesFilter";
 import { useData } from "../../../hooks/useData";
 import { HashtagFilter } from "../../common/HashtagFilter";
 import { PRODUCT_LIMIT } from "../../../utils/dataLimits";
+import { useScrollUp } from "../../../hooks/useScrollUp";
 
 export const Products = () => {
 
@@ -40,7 +41,10 @@ export const Products = () => {
     } = useSearch<ProductInterface>(
         'product',
         PRODUCT_LIMIT,
+        { hashtags: choosedHashtags, productType: choosedProductType },
+        [choosedHashtags, choosedProductType]
     );
+    useScrollUp(page);
 
     const getGalery = (): GaleryItem[] => {
         if (!data) return [];

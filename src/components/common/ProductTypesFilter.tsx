@@ -13,7 +13,7 @@ export const ProductTypesFilter = ({ choosedProductType, productTypes, handleCha
     };
 
     const productTypesList = () => {
-        return productTypes.map(h => <FilterItem key={h.id} checked={checkIsChecked(h.name)} value={h.name} handleChange={handleChange} />);
+        return productTypes.map(h => <FilterItem key={h.id} checked={checkIsChecked(h.id)} name={h.name} value={h.id} handleChange={handleChange} />);
     };
 
     return (
