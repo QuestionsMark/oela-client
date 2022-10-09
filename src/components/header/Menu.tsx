@@ -34,7 +34,7 @@ export const Menu = () => {
                     <NavLink className="menu__link" to="/collections" onClick={hideMenu}>Kolekcje</NavLink>
                 </li>
                 <li className="menu__item">
-                    <NavLink className="menu__link" to="/products" onClick={hideMenu}>Produkty</NavLink>
+                    <NavLink className="menu__link" to="/products" end onClick={hideMenu}>Produkty</NavLink>
                 </li>
                 <li className="menu__item">
                     <NavLink className="menu__link" to="/contact" onClick={hideMenu}>Kontakt</NavLink>

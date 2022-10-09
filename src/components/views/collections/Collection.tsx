@@ -24,7 +24,7 @@ export const Collection = () => {
                 <div className="collection__wrapper slide-animation">
                     <h1 className="collection__title">{collection.name}</h1>
                     <Text className="collection__description">{collection.description}</Text>
-                    <Galery galery={getGalery()} model="cards" />
+                    <Galery galery={getGalery()} model="products" />
                 </div> : <Loading />}
         </main>
     );
