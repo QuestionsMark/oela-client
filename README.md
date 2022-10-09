@@ -6,7 +6,7 @@
 <br />
 <div align="center">
   <a href="https://oela.pl">
-    <img src="./readme/logo.png" alt="oela.pl logo" width="200" height="294">
+    <img src="./readme/logo.png" alt="oela.pl logo" width="294" height="200">
   </a>
 
 <h1 align="center">oela.pl</h1>
