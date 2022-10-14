@@ -20,16 +20,22 @@
     &__list {
         display: flex;
         flex-wrap: wrap;
+        justify-content: center;
         gap: 15px;
+
+        @media (min-width: 600px) {
+            justify-content: flex-start;
+        }
     }
 
     &__item {
         transform: translateX(100px);
-        padding: 8px 30px;
+        padding: 4px 16px;
         color: $green;
         background-color: #f5f8dc;
         font-family: $content;
         font-weight: 200;
+        font-size: 14px;
         text-transform: uppercase;
         opacity: 0;
         cursor: pointer;
@@ -44,6 +50,15 @@
         &.checked {
             background-color: $light-green;
             // color: #eee;
+        }
+
+        @media (min-width: 600px) {
+            padding: 6px 20px;
+            font-size: 15px;
+        }
+        @media (min-width: 1024px) {
+            padding: 8px 30px;
+            font-size: 16px;
         }
     }
 }
