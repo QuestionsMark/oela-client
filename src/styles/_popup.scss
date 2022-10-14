@@ -1,6 +1,6 @@
 .popup {
     &-overlay {
-        background-color: rgba(0,0,0,0);
+        background-color: rgba(255,255,255,0);
         animation: show-popup 0.3s ease forwards;
     }
 
@@ -24,6 +24,7 @@
 
 .lightbox {
     &-overlay {
+        background-color: rgba(245,245,245,0.8);
         animation: none;
     }
 }
