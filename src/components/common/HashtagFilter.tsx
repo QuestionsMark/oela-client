@@ -19,6 +19,7 @@ export const HashtagFilter = ({ choosedHashtags, hashtags, handleChange }: Props
 
     return (
         <div className="filter">
+            <p className="filter__title">hashtagi</p>
             <ul className="filter__list">
                 {hashtagList()}
             </ul>

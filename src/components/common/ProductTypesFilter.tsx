@@ -18,6 +18,7 @@ export const ProductTypesFilter = ({ choosedProductType, productTypes, handleCha
 
     return (
         <div className="filter">
+            <p className="filter__title">typ produktu</p>
             <ul className="filter__list">
                 {productTypesList()}
             </ul>

@@ -1,16 +1,31 @@
 .filter {
-    padding: 30px 30px 10px;
+    position: relative;
+    padding: 15px 30px;
     border-bottom: 1px solid $light-green;
+
+    &__title {
+        position: absolute;
+        left: 50%;
+        top: 0;
+        transform: translate(-50%, -50%);
+        padding: 0 10px;
+        color: $green;
+        background-color: #fff;
+        font-family: $content;
+        font-size: 16px;
+        font-weight: 200;
+        text-transform: uppercase;
+    }
 
     &__list {
         display: flex;
         flex-wrap: wrap;
+        gap: 15px;
     }
 
     &__item {
         transform: translateX(100px);
         padding: 8px 30px;
-        margin: 0 20px 20px 0;
         color: $green;
         background-color: #f5f8dc;
         font-family: $content;
