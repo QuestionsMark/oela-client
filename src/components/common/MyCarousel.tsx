@@ -2,21 +2,23 @@ import { useState } from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import { HOST_ADDRESS } from '../../config';
 import { Slide } from './CarouselItem';
+import { LightBoxActions } from './LightBox';
 
 interface Props {
-    className?: string;
-    outside?: boolean;
     showThumbs: boolean;
     slides: Slide[];
+    actions?: LightBoxActions;
+    className?: string;
+    outside?: boolean;
 }
 
-export const MyCarousel = ({ className, outside, slides, showThumbs }: Props) => {
+export const MyCarousel = ({ className, outside, slides, showThumbs, actions }: Props) => {
 
     const [index, setIndex] = useState(0);
 
     const carouselItemList = () => {
         return slides.map(s => (
-            <div key={s.id} className="carousel__item">
+            <div key={s.id} className="carousel__item" onClick={actions && actions.open}>
                 <img src={s.staticImg ? s.src : `${HOST_ADDRESS}/file/${s.src}`} alt={s.alt} className="carousel__img" crossOrigin="anonymous" />
                 {!outside && s.title && s.description && <div className="legend">
                     <h3 className="carousel__title">{s.title}</h3>

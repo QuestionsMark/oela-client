@@ -47,7 +47,12 @@
 
     &__subtitle {
         margin-bottom: 20px;
-        color: $green;
+        color: darken($light-green, 30%);
+        font-family: $content;
+        font-size: 14px;
+        font-weight: 200;
+        letter-spacing: 2px;
+        text-transform: uppercase;
     }
 
     &__description {

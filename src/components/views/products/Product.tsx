@@ -1,9 +1,9 @@
 import { useRef } from "react";
 import { useParams } from "react-router-dom";
-import { SRLWrapper } from "simple-react-lightbox";
 import { useData } from "../../../hooks/useData";
 import { ProductInterface } from "../../../types";
 import { makeSlidesFromImages } from "../../../utils/getSlides";
+import { LightBox } from "../../common/LightBox";
 import { Loading } from "../../common/Loading";
 
 import { MyCarousel } from "../../common/MyCarousel";
@@ -20,9 +20,9 @@ export const Product = () => {
             {product ?
                 <div className="product__wrapper slide-animation">
                     <section className="product__content">
-                        <SRLWrapper>
-                            <MyCarousel slides={makeSlidesFromImages(product.images)} showThumbs className="product__carousel" />
-                        </SRLWrapper>
+                        <LightBox images={product.images}>
+                            {(actions) => <MyCarousel slides={makeSlidesFromImages(product.images)} showThumbs className="product__carousel" actions={actions} />}
+                        </LightBox>
                     </section>
                     <ProductAsideInfo linkText="zamów produkt" product={product} />
                 </div> : <Loading />}

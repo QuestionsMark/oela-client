@@ -1,5 +1,6 @@
 *::-webkit-scrollbar {
     width: 4px;
+    height: 4px;
 }
 
 *::-webkit-scrollbar-thumb {
@@ -26,6 +27,7 @@ body {
     display: block;
     object-fit: cover;
     width: 100%;
+    user-select: none;
 
     &--galery {
         aspect-ratio: 1/1;

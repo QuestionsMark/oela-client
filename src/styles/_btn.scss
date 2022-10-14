@@ -1,0 +1,9 @@
+.btn {
+    color: lighten($green, 10%);
+    cursor: pointer;
+    transition: $transition-time;
+    
+    &:hover {
+        color: $green;
+    }
+}

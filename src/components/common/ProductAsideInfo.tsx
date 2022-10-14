@@ -9,7 +9,6 @@ interface Props {
 }
 
 export const ProductAsideInfo = ({ product, linkText }: Props) => {
-
     const specificationList = () => {
         return product.specifications.map(s => <SpecificationItem key={s.id} specification={s} />);
     };
@@ -18,6 +17,7 @@ export const ProductAsideInfo = ({ product, linkText }: Props) => {
         <aside className="product__aside">
             <div className="product__aside-section">
                 <h2 className="product__title">{product.name}</h2>
+                <h3 className="product__subtitle">{product.productType.name}</h3>
                 <Text className="product__description">{product.description}</Text>
             </div>
             {product.specifications.length > 0 && <div className="product__aside-section specifications">
