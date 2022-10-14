@@ -1,0 +1,21 @@
+.catalog {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+
+    &__title {
+        margin-bottom: 20px;
+        color: $green;
+        font-family: $content;
+        font-size: 30px;
+        font-weight: 200;
+    }
+
+    &__link {
+        display: block;
+        width: 200px;
+        cursor: pointer;
+    }
+}

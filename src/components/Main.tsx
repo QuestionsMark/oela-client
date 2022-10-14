@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router-dom";
+import { Catalog } from "./views/Catalog";
 import { Card } from "./views/collections/Card";
 import { Collection } from "./views/collections/Collection";
 import { Collections } from "./views/collections/Collections";
@@ -26,6 +27,7 @@ export const Main = () => {
             <Route path="/products/:id" element={<Product />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/catalog" element={<Catalog />} />
             <Route path="*" element={<NotFound />} />
         </Routes>
     );
