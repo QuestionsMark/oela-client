@@ -10,7 +10,6 @@ import { MyCarousel } from "../../common/MyCarousel";
 import { ProductAsideInfo } from "../../common/ProductAsideInfo";
 
 export const Product = () => {
-
     const componentRef = useRef<HTMLElement>(null);
     const { id } = useParams();
     const { data: product } = useData<ProductInterface>(`product/${id}`, componentRef);

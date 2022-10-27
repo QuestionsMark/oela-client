@@ -1,10 +1,28 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import axios, { Canceler, AxiosError } from 'axios';
 import { HOST_ADDRESS } from '../config';
+import { useNavigate,  } from 'react-router-dom';
+import { useURLQueryString } from './useURLQueryString';
 
 export interface Queries {
     hashtags?: string[];
     productType?: string;
+}
+
+export interface URLSearchParamsObject {
+    page?: string;
+    search?: string;
+    productType?: string;
+    hashtags?: string[];
+}
+
+export interface URLSearchParamsString {
+    pathname: string;
+    locationQueryString: string;
+    queryPage: string;
+    querySearch: string;
+    queryProductType: string;
+    queryHashtags: string;
 }
 
 export interface SearchResult<T> {
@@ -24,6 +42,9 @@ export function useSearch<T>(collection: string, limit: number, queries: Queries
     const debounceTimeoutId = useRef<NodeJS.Timeout | null>(null);
     const delayTimeoutId = useRef<NodeJS.Timeout | null>(null);
 
+    const navigate = useNavigate();
+    const { locationQueryString, pathname, queryPage, querySearch } = useURLQueryString();
+
     const stringify = (): Queries => {
         const { hashtags, productType } = queries;
         return {
@@ -33,10 +54,12 @@ export function useSearch<T>(collection: string, limit: number, queries: Queries
     };
 
     const [reload, setReload] = useState(false);
-    const [page, setPage] = useState<number>(1);
+    const [page, setPage] = useState<number>(queryPage ? Number(queryPage) : 1);
+    
+    const [locationPage, setLocationPage] = useState<number>(queryPage ? Number(queryPage) : 1);
     const [stringifyQueries, setStringifyQueries] = useState<Queries>(stringify());
-    const [searchPhrase, setSearchPhrase] = useState('');
-    const [search, setSearch] = useState('');
+    const [searchPhrase, setSearchPhrase] = useState(decodeURI(querySearch || ''));
+    const [search, setSearch] = useState(decodeURI(querySearch || ''));
     const handleSearchPhraseChange = (text: string) => {
         setSearchPhrase(text);
     };
@@ -45,6 +68,37 @@ export function useSearch<T>(collection: string, limit: number, queries: Queries
         setReload(state => !state);
         setPage(1);
     };
+
+    useEffect(() => {
+        const { hashtags, productType } = queries;
+        const searchParamsObject: URLSearchParamsObject = {};
+
+        if (page !== 1) {
+            searchParamsObject.page = String(page);
+        }
+        if (searchPhrase) {
+            searchParamsObject.search = searchPhrase;
+        }
+        if (productType) {
+            searchParamsObject.productType = productType;
+        }
+        if (hashtags && hashtags.length !== 0) {
+            searchParamsObject.hashtags = hashtags;
+        }
+
+        const searchParams = new URLSearchParams(searchParamsObject as any).toString();
+
+        navigate(`${pathname}${page !== 1 || searchPhrase || productType || hashtags ? '?' : ''}${searchParams}`);
+    }, [page, search, stringifyQueries]);
+
+    useEffect(() => {
+        if (!queryPage) return;
+        setLocationPage(Number(queryPage));
+        if (page !== Number(queryPage)) {
+            setPage(Number(queryPage));
+        }
+        setSearchPhrase(decodeURI(querySearch || ''));
+    }, [locationQueryString]);
 
     useEffect(() => {
         setData([]);
@@ -56,6 +110,7 @@ export function useSearch<T>(collection: string, limit: number, queries: Queries
         }
         debounceTimeoutId.current = setTimeout(() => {
             setPage(1);
+            setLocationPage(1);
             setSearch(searchPhrase);
             if (JSON.stringify(stringifyQueries) !== JSON.stringify(stringify())) {
                 setData([]);
@@ -63,6 +118,12 @@ export function useSearch<T>(collection: string, limit: number, queries: Queries
             }
         }, 500);
     }, [searchPhrase, ...dependencies]);
+
+    useEffect(() => {
+        if (debounceTimeoutId.current) {
+            clearTimeout(debounceTimeoutId.current);
+        }
+    }, []);
 
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState<T[]>([]);
@@ -84,7 +145,7 @@ export function useSearch<T>(collection: string, limit: number, queries: Queries
             url: `${HOST_ADDRESS}/${collection}`,
             params: {
                 search: search,
-                page: page,
+                page: locationPage,
                 limit,
                 ...stringifyQueries,
             },
@@ -113,7 +174,7 @@ export function useSearch<T>(collection: string, limit: number, queries: Queries
             cancel();
         }
 
-    }, [search, page, collection, reload, stringifyQueries]);
+    }, [search, locationPage, collection, reload, stringifyQueries]);
 
-    return { loading, data, hasMore, amount, page, searchPhrase, setPage, handleSearchPhraseChange, refresh };
+    return { loading, data, hasMore, amount, page: locationPage, searchPhrase, setPage, handleSearchPhraseChange, refresh };
 }
